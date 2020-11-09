@@ -140,8 +140,9 @@ function createTeam(){
         if (data.addEmployee === true){
             createEmployee(data);
         } else {
-            console.log(employees);
-            writeHtml(employees);
+            render(employees);
+            // console.log(render(employees));
+            writeHtml(render(employees));
             // console.log (managerArray);
             // console.log (internArray);
             // console.log (engineerArray);
