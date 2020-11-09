@@ -10,121 +10,215 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const jerry = new Manager("Jerry Seinfield", 808, "J.Sein@field.com", 909);
 
 
-const managerArray = [];
-const internArray = [];
-const engineerArray = [];
+// const managerArray = [];
+// const internArray = [];
+// const engineerArray = [];
+
+const employees = [];
+
+// function createTeam(){
+//     inquirer.prompt([
+//         {
+//             type: "list",
+//             name: "position",
+//             message: "Would you like to add a Team Member?",
+//             choices: ["Manager", "Intern", "Engineer", "No, I'm all done."]
+//         }
+//     ]).then(data => {
+//         if (data.position === "Manager"){
+//             createManager();
+//         } else if (data.position === "Intern") {
+//             createIntern();
+//         } else if (data.position === "Engineer") {
+//             createEngineer();
+//         } else {
+//             console.log (managerArray);
+//             console.log (internArray);
+//             console.log (engineerArray);
+//         }
+//     });
+    
+// }
+
+// function createManager(){
+//     inquirer.prompt([
+//         {
+//             type: "input",
+//             name: "managerName",
+//             message: "What is their name?",
+//         },
+//         {
+//             type: "input",
+//             name: "managerId",
+//             message: "What is their ID number?",
+//         },
+//         {
+//             type: "input",
+//             name: "managerEmail",
+//             message: "What is their email address?",
+//         },
+//         {
+//             type: "input",
+//             name: "managerOffice",
+//             message: "What is their office number?",
+//         }
+//     ]).then(data => {
+//         managerArray.push(new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOffice));
+//         console.log(managerArray);
+//         createTeam();
+//     })
+//     };
+
+// function createIntern(){
+//     inquirer.prompt([
+//         {
+//             type: "input",
+//             name: "internName",
+//             message: "What is their name?",
+//         },
+//         {
+//             type: "input",
+//             name: "internId",
+//             message: "What is their ID number?",
+//         },
+//         {
+//             type: "input",
+//             name: "internEmail",
+//             message: "What is their email address?",
+//         },
+//         {
+//             type: "input",
+//             name: "internSchool",
+//             message: "What school do they go to?",
+//         },
+//     ]).then(data => {
+//         internArray.push(new Intern(data.internName, data.internId, data.internEmail, data.internSchool));
+//         console.log(internArray);
+//         createTeam();
+//     })
+//     };
+
+// function createEngineer(){
+//     inquirer.prompt([
+//         {
+//             type: "input",
+//             name: "engineerName",
+//             message: "What is their name?",
+//         },
+//         {
+//             type: "input",
+//             name: "engineerId",
+//             message: "What is their ID number?",
+//         },
+//         {
+//             type: "input",
+//             name: "engineerEmail",
+//             message: "What is their email address?",
+//         },
+//         {
+//             type: "input",
+//             name: "engineerGithub",
+//             message: "What is their GitHub Username?",
+//         },
+//     ]).then(data => {
+//         engineerArray.push(new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerGithub));
+//         console.log(engineerArray);
+//         createTeam();
+//     })
+//     };
 
 function createTeam(){
     inquirer.prompt([
         {
-            type: "list",
-            name: "position",
+            type: "confirm",
+            name: "addEmployee",
             message: "Would you like to add a Team Member?",
-            choices: ["Manager", "Intern", "Engineer", "No, I'm all done."]
         }
     ]).then(data => {
-        if (data.position === "Manager"){
-            createManager();
-        } else if (data.position === "Intern") {
-            createIntern();
-        } else if (data.position === "Engineer") {
-            createEngineer();
+        if (data.addEmployee === true){
+            createEmployee(data);
         } else {
-            console.log ("All set!");
+            console.log(employees);
+            writeHtml(employees);
+            // console.log (managerArray);
+            // console.log (internArray);
+            // console.log (engineerArray);
         }
     });
     
 }
 
-function createManager(){
+function createEmployee(){
     inquirer.prompt([
         {
+            type: "list",
+            name: "position",
+            message: "Would you like to add a Team Member?",
+            choices: ["Manager", "Intern", "Engineer"],
+        },
+        {
             type: "input",
-            name: "managerName",
+            name: "name",
             message: "What is their name?",
         },
         {
             type: "input",
-            name: "managerId",
+            name: "id",
             message: "What is their ID number?",
         },
         {
             type: "input",
-            name: "managerEmail",
+            name: "email",
             message: "What is their email address?",
         },
         {
             type: "input",
-            name: "managerOffice",
+            name: "office",
             message: "What is their office number?",
+            when: (data) => data.position === "Manager",
+        },
+        {
+            type: "input",
+            name: "school",
+            message: "What school do they attend?",
+            when: (data) => data.position === "Intern",
+        },
+        {
+            type: "input",
+            name: "github",
+            message: "What is their GitHub account?",
+            when: (data) => data.position === "Engineer",
         }
     ]).then(data => {
-        managerArray.push(new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOffice));
-        console.log(managerArray);
+        if (data.position === "Manager") {
+            employees.push(new Manager(data.name, data.id, data.email, data.office));
+        // console.log(managerArray);
+        } else if (data.position === "Intern") {
+            employees.push(new Intern(data.name, data.id, data.email, data.school));
+        // console.log(internArray);
+        } else {
+            employees.push(new Engineer(data.name, data.id, data.email, data.github));
+        // console.log(engineerArray);
+        }
         createTeam();
     })
     };
-
-function createIntern(){
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "internName",
-            message: "What is their name?",
-        },
-        {
-            type: "input",
-            name: "internId",
-            message: "What is their ID number?",
-        },
-        {
-            type: "input",
-            name: "internEmail",
-            message: "What is their email address?",
-        },
-        {
-            type: "input",
-            name: "internSchool",
-            message: "What school do they go to?",
-        },
-    ]).then(data => {
-        internArray.push(new Manager(data.internName, data.internId, data.internEmail, data.internSchool));
-        console.log(internArray);
-        createTeam();
-    })
-    };
-
-function createEngineer(){
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "engineerName",
-            message: "What is their name?",
-        },
-        {
-            type: "input",
-            name: "engineerId",
-            message: "What is their ID number?",
-        },
-        {
-            type: "input",
-            name: "engineerEmail",
-            message: "What is their email address?",
-        },
-        {
-            type: "input",
-            name: "engineerGithub",
-            message: "What is their GitHub Username?",
-        },
-    ]).then(data => {
-        engineerArray.push(new Manager(data.engineerName, data.engineerId, data.engineerEmail, data.engineerGithub));
-        console.log(engineerArray);
-        createTeam();
-    })
-    };
+    
+const writeHtml = (data) => {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdir(OUTPUT_DIR, (err) => {
+            if (err) throw err;
+        });
+    }
+    fs.writeFile(outputPath, data, (err) => {
+        if (err) throw err;
+        console.log(`data ${data}`);
+        console.log(`employees ${employees}`);
+        console.log("Success!");
+    });
+};
 
 createTeam();
 
