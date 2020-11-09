@@ -4,6 +4,7 @@ const Intern = require("./lib/Intern.js");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const colors = require("colors");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -126,7 +127,7 @@ const employees = [];
 
 
 function createTeam(){
-    console.log("Let's start with your information first.");
+    console.log("Let's start with your information first.".brightGreen.underline);
     inquirer.prompt([
         {
             type: "input",
@@ -150,7 +151,7 @@ function createTeam(){
         },
     ]).then(data => {
         employees.push(new Manager(data.name, data.id, data.email, data.office)); 
-        console.log("Time to create your team!")
+        console.log("Time to create your team!".brightGreen.underline)
         createEmployee();
     });
     
@@ -161,27 +162,27 @@ function createEmployee(){
         {
             type: "list",
             name: "position",
-            message: "Would you like to add a Team Member?",
-            choices: ["Intern", "Engineer", "No more employees."],
+            message: "Would you like to add a Team Member?".grey,
+            choices: ["Intern".green, "Engineer".green, "No more employees".brightRed],
         },
         {
             type: "input",
             name: "name",
             message: "What is their name?",
-            when: (data) => data.position !== "No more employees.",
+            when: (data) => data.position !== "No more employees".brightRed,
         },
         {
             type: "input",
             name: "id",
             message: "What is their ID number?",
-            when: (data) => data.position !== "No more employees.",
+            when: (data) => data.position !== "No more employees".brightRed,
 
         },
         {
             type: "input",
             name: "email",
             message: "What is their email address?",
-            when: (data) => data.position !== "No more employees.",
+            when: (data) => data.position !== "No more employees".brightRed,
 
         },
         // {
@@ -194,19 +195,19 @@ function createEmployee(){
             type: "input",
             name: "school",
             message: "What school do they attend?",
-            when: (data) => data.position === "Intern",
+            when: (data) => data.position === "Intern".green,
         },
         {
             type: "input",
             name: "github",
             message: "What is their GitHub account?",
-            when: (data) => data.position === "Engineer",
+            when: (data) => data.position === "Engineer".green,
         }
     ]).then(data => {
-        if (data.position === "Intern") {
+        if (data.position === "Intern".green) {
             employees.push(new Intern(data.name, data.id, data.email, data.school));
             createEmployee();
-        } else if (data.position === "Engineer") {
+        } else if (data.position === "Engineer".green) {
             employees.push(new Engineer(data.name, data.id, data.email, data.github));
             createEmployee();
         } else {
@@ -225,7 +226,7 @@ const writeHtml = (data) => {
     fs.writeFileSync(outputPath, render(data), (err) => {
         if (err) throw err;
     });
-    console.log("Your team is ready to go!");
+    console.log("Your team is ready to go!".brightGreen.underline);
 };
 
 createTeam();
