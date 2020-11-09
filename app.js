@@ -126,7 +126,7 @@ const employees = [];
 
 
 function createTeam(){
-    console.log("Let's create your team!");
+    console.log("Let's start with your information first.");
     inquirer.prompt([
         {
             type: "input",
@@ -150,6 +150,7 @@ function createTeam(){
         },
     ]).then(data => {
         employees.push(new Manager(data.name, data.id, data.email, data.office)); 
+        console.log("Time to create your team!")
         createEmployee();
     });
     
@@ -224,7 +225,7 @@ const writeHtml = (data) => {
     fs.writeFileSync(outputPath, render(data), (err) => {
         if (err) throw err;
     });
-    console.log("HTML page has been created!");
+    console.log("Your team is ready to go!");
 };
 
 createTeam();
