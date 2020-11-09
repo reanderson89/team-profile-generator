@@ -13,7 +13,9 @@ const render = require("./lib/htmlRenderer");
 const jerry = new Manager("Jerry Seinfield", 808, "J.Sein@field.com", 909);
 
 
-
+const managerArray = [];
+const internArray = [];
+const engineerArray = [];
 
 function createTeam(){
     inquirer.prompt([
@@ -60,6 +62,8 @@ function createManager(){
             message: "What is their office number?",
         }
     ]).then(data => {
+        managerArray.push(new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOffice));
+        console.log(managerArray);
         createTeam();
     })
     };
@@ -87,6 +91,8 @@ function createIntern(){
             message: "What school do they go to?",
         },
     ]).then(data => {
+        internArray.push(new Manager(data.internName, data.internId, data.internEmail, data.internSchool));
+        console.log(internArray);
         createTeam();
     })
     };
@@ -114,6 +120,8 @@ function createEngineer(){
             message: "What is their GitHub Username?",
         },
     ]).then(data => {
+        engineerArray.push(new Manager(data.engineerName, data.engineerId, data.engineerEmail, data.engineerGithub));
+        console.log(engineerArray);
         createTeam();
     })
     };
