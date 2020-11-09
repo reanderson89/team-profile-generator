@@ -138,14 +138,9 @@ function createTeam(){
         }
     ]).then(data => {
         if (data.addEmployee === true){
-            createEmployee(data);
+            createEmployee();
         } else {
-            render(employees);
-            // console.log(render(employees));
             writeHtml(render(employees));
-            // console.log (managerArray);
-            // console.log (internArray);
-            // console.log (engineerArray);
         }
     });
     
@@ -195,13 +190,10 @@ function createEmployee(){
     ]).then(data => {
         if (data.position === "Manager") {
             employees.push(new Manager(data.name, data.id, data.email, data.office));
-        // console.log(managerArray);
         } else if (data.position === "Intern") {
             employees.push(new Intern(data.name, data.id, data.email, data.school));
-        // console.log(internArray);
         } else {
             employees.push(new Engineer(data.name, data.id, data.email, data.github));
-        // console.log(engineerArray);
         }
         createTeam();
     })
@@ -215,8 +207,6 @@ const writeHtml = (data) => {
     }
     fs.writeFile(outputPath, data, (err) => {
         if (err) throw err;
-        console.log(`data ${data}`);
-        console.log(`employees ${employees}`);
         console.log("Success!");
     });
 };
