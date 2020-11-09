@@ -10,6 +10,116 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const jerry = new Manager("Jerry Seinfield", 808, "J.Sein@field.com", 909);
+
+
+
+
+function createTeam(){
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "position",
+            message: "Would you like to add a Team Member?",
+            choices: ["Manager", "Intern", "Engineer", "No, I'm all done."]
+        }
+    ]).then(data => {
+        if (data.position === "Manager"){
+            createManager();
+        } else if (data.position === "Intern") {
+            createIntern();
+        } else if (data.position === "Engineer") {
+            createEngineer();
+        } else {
+            console.log ("All set!");
+        }
+    });
+    
+}
+
+function createManager(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "managerName",
+            message: "What is their name?",
+        },
+        {
+            type: "input",
+            name: "managerId",
+            message: "What is their ID number?",
+        },
+        {
+            type: "input",
+            name: "managerEmail",
+            message: "What is their email address?",
+        },
+        {
+            type: "input",
+            name: "managerOffice",
+            message: "What is their office number?",
+        }
+    ]).then(data => {
+        createTeam();
+    })
+    };
+
+function createIntern(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "internName",
+            message: "What is their name?",
+        },
+        {
+            type: "input",
+            name: "internId",
+            message: "What is their ID number?",
+        },
+        {
+            type: "input",
+            name: "internEmail",
+            message: "What is their email address?",
+        },
+        {
+            type: "input",
+            name: "internSchool",
+            message: "What school do they go to?",
+        },
+    ]).then(data => {
+        createTeam();
+    })
+    };
+
+function createEngineer(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "engineerName",
+            message: "What is their name?",
+        },
+        {
+            type: "input",
+            name: "engineerId",
+            message: "What is their ID number?",
+        },
+        {
+            type: "input",
+            name: "engineerEmail",
+            message: "What is their email address?",
+        },
+        {
+            type: "input",
+            name: "engineerGithub",
+            message: "What is their GitHub Username?",
+        },
+    ]).then(data => {
+        createTeam();
+    })
+    };
+
+createTeam();
+
 
     
 
