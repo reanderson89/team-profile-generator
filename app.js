@@ -10,12 +10,6 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-
-
-// const managerArray = [];
-// const internArray = [];
-// const engineerArray = [];
-
 const employees = [];
 
 // function createTeam(){
@@ -129,19 +123,34 @@ const employees = [];
 //     })
 //     };
 
+
+
 function createTeam(){
+    console.log("Let's create your team!");
     inquirer.prompt([
         {
-            type: "confirm",
-            name: "addEmployee",
-            message: "Would you like to add a Team Member?",
-        }
+            type: "input",
+            name: "name",
+            message: "What is your name?",
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your ID number?",
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your email address?",
+        },
+        {
+            type: "input",
+            name: "office",
+            message: "What is your office number?",
+        },
     ]).then(data => {
-        if (data.addEmployee === true){
-            createEmployee();
-        } else {
-            writeHtml(render(employees));
-        }
+        employees.push(new Manager(data.name, data.id, data.email, data.office)); 
+        createEmployee();
     });
     
 }
@@ -152,29 +161,34 @@ function createEmployee(){
             type: "list",
             name: "position",
             message: "Would you like to add a Team Member?",
-            choices: ["Manager", "Intern", "Engineer"],
+            choices: ["Intern", "Engineer", "No more employees."],
         },
         {
             type: "input",
             name: "name",
             message: "What is their name?",
+            when: (data) => data.position !== "No more employees.",
         },
         {
             type: "input",
             name: "id",
             message: "What is their ID number?",
+            when: (data) => data.position !== "No more employees.",
+
         },
         {
             type: "input",
             name: "email",
             message: "What is their email address?",
+            when: (data) => data.position !== "No more employees.",
+
         },
-        {
-            type: "input",
-            name: "office",
-            message: "What is their office number?",
-            when: (data) => data.position === "Manager",
-        },
+        // {
+        //     type: "input",
+        //     name: "office",
+        //     message: "What is their office number?",
+        //     when: (data) => data.position === "Manager",
+        // },
         {
             type: "input",
             name: "school",
@@ -188,27 +202,29 @@ function createEmployee(){
             when: (data) => data.position === "Engineer",
         }
     ]).then(data => {
-        if (data.position === "Manager") {
-            employees.push(new Manager(data.name, data.id, data.email, data.office));
-        } else if (data.position === "Intern") {
+        if (data.position === "Intern") {
             employees.push(new Intern(data.name, data.id, data.email, data.school));
-        } else {
+            createEmployee();
+        } else if (data.position === "Engineer") {
             employees.push(new Engineer(data.name, data.id, data.email, data.github));
+            createEmployee();
+        } else {
+            writeHtml(employees);
         }
-        createTeam();
+        
     })
     };
     
 const writeHtml = (data) => {
     if (!fs.existsSync(OUTPUT_DIR)) {
-        fs.mkdir(OUTPUT_DIR, (err) => {
+        fs.mkdirSync(OUTPUT_DIR, (err) => {
             if (err) throw err;
         });
     }
-    fs.writeFile(outputPath, data, (err) => {
+    fs.writeFileSync(outputPath, render(data), (err) => {
         if (err) throw err;
-        console.log("Success!");
     });
+    console.log("HTML page has been created!");
 };
 
 createTeam();
