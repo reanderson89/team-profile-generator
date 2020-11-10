@@ -24,8 +24,10 @@
   javascript, node.js, bootstrap, jest, colors, inquirer
       
   ## **Demo**
-  - ![demo gif](pathway to gif goes here)
-  - ![alt text](http://url/to/img.png or link from relative pathway)
+  - ![demo gif](assets/commandLineDemo.gif)
+  - ![alt text](assets/html.png)
+  - ![alt text](assets/website.png)
+
   
   ## **Installation**
   Enter 'npm install' into the command line. This will install inquirer, jest, and colors.
